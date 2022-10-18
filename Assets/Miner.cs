@@ -157,6 +157,8 @@ namespace Game
                 case MessageType.BobMessage.ReadyToWork:
                     IsSleeping = false;
                     return "All mah fatigue has drained away. Time to find more gold!";
+                case MessageType.BobMessage.LetgetMoreNugget:
+                    return "Diggin' the dig' for more nugget!";
                 case MessageType.BobMessage.GoingToMine:
                     return "Walkin' to the goldmine";
                 case MessageType.BobMessage.Sleeping:
@@ -231,7 +233,7 @@ namespace Game
 
         public IEnumerator UpdateInBackground()
         {
-             yield return new WaitForSeconds(1);
+             yield return new WaitForSeconds(3);
              MIThirst += 1;
 
              if (IsSleeping)

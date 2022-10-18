@@ -17,7 +17,7 @@ namespace Game
             base.Enter();
             if (miner.MLocation != Location.bank)
             {
-                miner.SendMessageToWifey(MessageType.BobMessage.GoingToBank);
+                miner.UpdateMessageBox(MessageType.BobMessage.GoingToBank);
                 miner.MLocation = Location.bank;
             }
         }

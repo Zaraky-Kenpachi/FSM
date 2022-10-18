@@ -2,17 +2,39 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DrinkState : MonoBehaviour
+namespace Game
 {
-    // Start is called before the first frame update
-    void Start()
+    public class DrinkState : AbstractState
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        private readonly DrunkenFistMaster master;
+       
+        public DrinkState(DrunkenFistMaster master)
+        {
+            this.master = master;
+        }
+    
+        public override void Enter()
+        {
+        }
+    
+        public override IState Update()
+        {
+            IState nextState = this;
+            if (master.NmbOfSipTaken == 0)
+                master.DrinkOneSip();
+            else if (master.NmbOfSipTaken == 1)
+                master.DrinkTwoSip();
+            else if (master.NmbOfSipTaken == 2)
+                master.DrinkThreeSip();
+            else
+                master.DragonBreath();
+            
+            return nextState;
+        }
+    
+        public override void Leave()
+        {
+        }
     }
 }
+

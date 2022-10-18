@@ -29,7 +29,8 @@ public class MessageType : MonoBehaviour
         LeavingSaloon,
         GoingToSaloon,
         Asskicked,
-        LeavingShack
+        LeavingShack,
+        LetgetMoreNugget
     }
 
     public enum ElsaMessage
@@ -52,6 +53,8 @@ public class MessageType : MonoBehaviour
         OneSip,
         TwoSip,
         ThreeSip,
-        DragonBreath
+        DragonBreath,
+        GetReady,
+        DrinkForTheSoul
     }
 }

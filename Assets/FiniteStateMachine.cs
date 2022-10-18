@@ -24,6 +24,14 @@ namespace Game
                 currentState = nextState;
                 currentState?.Enter();
             }
+            //StartCoroutine((WaitForSeconds()));
+        }
+        
+        
+        public IEnumerator WaitForSeconds()
+        {
+            yield return new WaitForSeconds(1);
+            
         }
     }
 }

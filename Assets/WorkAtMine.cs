@@ -19,32 +19,33 @@ namespace Game
             base.Enter();
             if (miner.MLocation != Location.goldmine)
             {
-                miner.SendMessageToWifey(MessageType.BobMessage.GoingToMine);
+                miner.UpdateMessageBox(MessageType.BobMessage.GoingToMine);
                 miner.MLocation = Location.goldmine;
             }
         }
 
         public override IState Update()
         {
-             miner.MIFatigue += 1;
-             miner.MIGoldCarried++;
-             miner.UpdateMessageBox(MessageType.BobMessage.PickUpNugget);
-             if (!miner.Fatigued())
-            {
-                miner.UpdateMessageBox(MessageType.BobMessage.ReadyToWork);
-                return this;
-            }
-            if(miner.PocketsFull())
-            {
-                return new VisitBankState(miner);
-            }
-             if(miner.Thirsty())
-                return new DrinkAtBar(miner);
+            IState nextState = this;
+            miner.MIFatigue += 1;
+            miner.MIGoldCarried++;
+            miner.UpdateMessageBox(MessageType.BobMessage.PickUpNugget);
              
-             return this;
+            if (miner.Fatigued())
+            {
+                miner.UpdateMessageBox(MessageType.BobMessage.LetgetMoreNugget);
+                nextState = new GoHomeAndSleepState(miner);
+            }
+            else if(miner.PocketsFull())
+            {
+                nextState = new VisitBankState(miner);
+            }
+            else if(miner.Thirsty())
+                nextState = new DrinkAtBar(miner);
+             
+            return nextState;
         }
-
-
+        
         public override void Leave()
         {
             base.Leave();

@@ -8,17 +8,23 @@ namespace Game
     public class DrunkenFistMaster : MonoBehaviour
     {
         public event DFMasterMessage OnDFMasterMessageSentToMiner;
+        private int nmbOfSipTaken = 0;
+
+        public int NmbOfSipTaken
+        {
+            get => nmbOfSipTaken;
+            set => nmbOfSipTaken = value;
+        }
 
         [SerializeField] private Miner miner;
         private FiniteStateMachine stateMachine;
         [SerializeField] private GameObject messageBox;
         private Text messageBoxText;
-        private string name = "Elsa";
-        Location m_Location;
+        private string name = "Sensei";
         private void Awake()
         {
-            stateMachine = new FiniteStateMachine(new DoHouseWork(this));
-            messageBox = GameObject.Find("WifeMessageBox");
+            stateMachine = new FiniteStateMachine(new DrinkState(this));
+            messageBox = GameObject.Find("DrunkenMessageBox");
             messageBoxText = messageBox.GetComponent<UnityEngine.UI.Text>();
 
         }
@@ -33,49 +39,72 @@ namespace Game
 
         public void ReactToMessage(MessageType.BobMessage bobMessageReceived)
         {
-
-        }
-
-        public void UpdateMessageBox(MessageType.ElsaMessage ElsaMessageToSend)
-        {
-            messageBoxText.text = GetMessageString(ElsaMessageToSend);
-        }
-
-        private string GetMessageString(MessageType.ElsaMessage bobMessageToFind)
-        {
-            switch (bobMessageToFind)
+            switch (bobMessageReceived)
             {
-                case MessageType.ElsaMessage.StewReady:
-                    return "Bob! StewReady! Lets eat";
-                case MessageType.ElsaMessage.PutStewOnTable:
-                    return "Puttin' the stew on the table";
-                case MessageType.ElsaMessage.FussinOverFood:
-                    return "Fussin' over food";
-                case MessageType.ElsaMessage.PutStewInOven:
-                    return "Putting the stew in the oven";
-                case MessageType.ElsaMessage.LeavingBathroom:
-                    return "Leavin' the Jon";
-                case MessageType.ElsaMessage.Relief:
-                    return "Ahhhhhh! Sweet relief!";
-                case MessageType.ElsaMessage.Makeup:
-                    return "Walkin' to the can. Need to powda mah pretty li'lle nose";
-                case MessageType.ElsaMessage.MakinBed:
-                    return "Makin' the bed";
-                case MessageType.ElsaMessage.Washin:
-                    return "Washin' the dishes";
-                case MessageType.ElsaMessage.Moppin:
-                    return "Moppin' the floor";
-                case MessageType.ElsaMessage.TimeToDoHouseWork:
-                    return "Time to do some more housework!";
-                default:
-                    return "Invalid string in ElsaMessage";
+                case MessageType.BobMessage.LetsTrainMaster:
+                    UpdateMessageBox(MessageType.DrunkenFistMaster.GetReady);
+                    break;
+                case MessageType.BobMessage.LetsDrinkMaster:
+                    UpdateMessageBox(MessageType.DrunkenFistMaster.DrinkForTheSoul);
+                    break;
             }
         }
+
+        public void UpdateMessageBox(MessageType.DrunkenFistMaster DFMasterMessageToSend)
+        {
+            messageBoxText.text = GetMessageString(DFMasterMessageToSend);
+        }
+
+        private string GetMessageString(MessageType.DrunkenFistMaster masterMessage)
+        {
+            switch (masterMessage)
+            {
+                case MessageType.DrunkenFistMaster.OneSip:
+                    return "One sip for focus.";
+                case MessageType.DrunkenFistMaster.TwoSip:
+                    return "Two sip for courage";
+                case MessageType.DrunkenFistMaster.ThreeSip:
+                    return "Three sip for strength";
+                case MessageType.DrunkenFistMaster.DragonBreath:
+                    return "Unleash the dragon flame!";
+                case MessageType.DrunkenFistMaster.GetReady:
+                    return "Sure lil pupil, get ready for some ass'whooping";
+                case MessageType.DrunkenFistMaster.DrinkForTheSoul:
+                    return "Let meditate on this whisky";
+                default:
+                    return "Invalid string in DrunkenFistMasterMessage";
+            }
+        }
+
+        public void DrinkOneSip()
+        {
+            UpdateMessageBox(MessageType.DrunkenFistMaster.OneSip);
+            nmbOfSipTaken++;
+        }
+        public void DrinkTwoSip()
+        {
+            UpdateMessageBox(MessageType.DrunkenFistMaster.TwoSip);
+            nmbOfSipTaken++;
+
+        }
+        public void DrinkThreeSip()
+        {
+            UpdateMessageBox(MessageType.DrunkenFistMaster.ThreeSip);
+            nmbOfSipTaken++;
+
+        }
+        public void DragonBreath()
+        {
+            UpdateMessageBox(MessageType.DrunkenFistMaster.DragonBreath);
+            nmbOfSipTaken = 0;
+        }
+        
+        
+        
         
         public IEnumerator UpdateInBackground()
         {
-            yield return new WaitForSeconds(1);
-            
+            yield return new WaitForSeconds(3);
             stateMachine.Update();
             StartCoroutine(UpdateInBackground());
         }
