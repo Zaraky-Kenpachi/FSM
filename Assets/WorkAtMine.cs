@@ -31,18 +31,14 @@ namespace Game
             miner.MIGoldCarried++;
             miner.UpdateMessageBox(MessageType.BobMessage.PickUpNugget);
              
-            if (miner.Fatigued())
-            {
-                miner.UpdateMessageBox(MessageType.BobMessage.LetgetMoreNugget);
-                nextState = new GoHomeAndSleepState(miner);
-            }
-            else if(miner.PocketsFull())
+            if(miner.PocketsFull())
             {
                 nextState = new VisitBankState(miner);
             }
             else if(miner.Thirsty())
                 nextState = new DrinkAtBar(miner);
-             
+            else miner.UpdateMessageBox(MessageType.BobMessage.LetgetMoreNugget);
+            
             return nextState;
         }
         

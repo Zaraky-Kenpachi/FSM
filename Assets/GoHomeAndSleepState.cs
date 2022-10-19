@@ -32,15 +32,12 @@ namespace Game
                 miner.UpdateMessageBox(MessageType.BobMessage.ReadyToWork);
                 nextState =  new WorkAtMine(miner);
             }
-            else if (miner.Fatigued())
+            else 
             {
                 miner.DecreaseFatigue();
                 miner.UpdateMessageBox(MessageType.BobMessage.Sleeping);
                 nextState = this;
             }
-
-            if (miner.Wealth() > miner.ComfortLevel)
-                nextState = new DrinkAtBar(miner);
             
             return nextState;
         }

@@ -129,7 +129,8 @@ namespace Game
         }
         public void UpdateMessageBox(MessageType.BobMessage bobMessageToSend)
         {
-            messageBoxText.text = GetMessageString(bobMessageToSend);
+            StartCoroutine(SendMessageAndWait(bobMessageToSend));
+            
         }
 
         private string GetMessageString(MessageType.BobMessage bobMessageToFind)
@@ -198,11 +199,17 @@ namespace Game
         {
             if (elsa != null)
                 elsa.OnWifeyMessageSentToMiner += ReactToMessage;
+            if (masta != null)
+                masta.OnDFMasterMessageSentToMiner += ReactToMessage;
             StartCoroutine(UpdateInBackground());
         }
 
         // Update is called once per frame
         void ReactToMessage(MessageType.ElsaMessage elsaMessageReceived)
+        {
+            
+        }
+        void ReactToMessage(MessageType.DrunkenFistMaster drunkenFistMasterMessageReceived)
         {
             
         }
@@ -218,7 +225,10 @@ namespace Game
         public void          DecreaseFatigue(){MIFatigue = 0;}
         public void          IncreaseFatigue(){MIFatigue += 1;}
 
-        public int           Wealth(){return MIMoneyInBank;}
+        public int Wealth()
+        {
+            return m_iMoneyInBank;
+        }
 
         public void AddToWealth(int val)
         {
@@ -233,7 +243,7 @@ namespace Game
 
         public IEnumerator UpdateInBackground()
         {
-             yield return new WaitForSeconds(3);
+             yield return new WaitForSeconds(1);
              MIThirst += 1;
 
              if (IsSleeping)
@@ -251,6 +261,11 @@ namespace Game
              stateMachine.Update();
              if(continueUpdate)
                 StartCoroutine(UpdateInBackground());
+        }
+        public IEnumerator SendMessageAndWait(MessageType.BobMessage bobMessageToSend)
+        {
+            messageBoxText.text = GetMessageString(bobMessageToSend);
+            yield return new WaitForSeconds(1);
         }
     }
 }

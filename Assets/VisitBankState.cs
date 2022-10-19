@@ -25,22 +25,18 @@ namespace Game
         public override IState Update()
         {
             IState nextState;
-            if (miner.PocketsFull())
-            {
-                miner.UpdateMessageBox(MessageType.BobMessage.DepositAtBank);
-                miner.AddToWealth(miner.MIGoldCarried);
-                miner.MIGoldCarried = 0;
-            }
-
+           
+            miner.UpdateMessageBox(MessageType.BobMessage.DepositAtBank);
+            miner.AddToWealth(miner.MIGoldCarried);
+            miner.MIGoldCarried = 0;
+            Debug.Log( "Gold in bank: " + miner.Wealth());
+            
             if (miner.Wealth() >= miner.ComfortLevel)
             {
                 miner.UpdateMessageBox(MessageType.BobMessage.Rich);
+                Debug.Log("Updating box with rich");
                 nextState = new GoHomeAndSleepState(miner);
             }
-            else if (miner.Thirsty())
-                nextState = new DrinkAtBar(miner);
-            else if (miner.Fatigued())
-                nextState =  new GoHomeAndSleepState(miner);
             else
                 nextState = new WorkAtMine(miner);
 

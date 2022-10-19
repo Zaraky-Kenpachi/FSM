@@ -25,25 +25,19 @@ namespace Game
 
         public override IState Update()
         {
-            IState nextState = this;
             miner.UpdateMessageBox(MessageType.BobMessage.MightyFineLiquer);
             Debug.Log("Drank whisky at start of update");
             if (!miner.Fatigued())
             {
-                Debug.Log("Training with master");
-
                 miner.SendMessageToDrunkenFistMaster(MessageType.BobMessage.LetsTrainMaster);
                 TrainingWithMaster();
             }
             else
             {
-                Debug.Log("Drinking with master");
-
                 miner.SendMessageToDrunkenFistMaster(MessageType.BobMessage.LetsDrinkMaster);
                 miner.BuyAndDrinkAWhiskey();
-                nextState =  new GoHomeAndSleepState(miner);
             }
-            return nextState;
+            return new WorkAtMine(miner);
         }
 
         public override void Leave()

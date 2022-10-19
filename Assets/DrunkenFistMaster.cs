@@ -110,6 +110,4 @@ namespace Game
         }
     }
 }
-
-
 public delegate void DFMasterMessage(MessageType.DrunkenFistMaster DFMasterMessageSent);
